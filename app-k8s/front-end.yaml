@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: appk8s
+  labels:
+    app: kubesample
+    tier: frontend
+spec:
+  type: NodePort 
+  # type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: kubesample
+    tier: frontend
+---
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  selector:
+    matchLabels:
+      app: kubesample
+      tier: frontend
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: kubesample
+        tier: frontend
+    spec:
+      containers:
+      - name: php-redis
+        image: gcr.io/google-samples/gb-frontend:v4
+        resources:
+          requests:
+            cpu: 200m
+            memory: 400Mi
+        env:
+        - name: GET_HOSTS_FROM
+          value: dns
+        ports:
+        - containerPort: 80

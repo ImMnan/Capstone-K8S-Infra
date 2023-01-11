@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: appk8s
+  labels:
+    app: hello
+    tier: backend
+    role: master
+spec:
+  ports:
+  - port: 6379 
+    targetPort: 80
+  selector:
+    app: redis
+    tier: backend
+    role: master
+---
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: redis-master
+  namespace: appk8s
+spec:
+  selector:
+    matchLabels:
+      app: redis
+      role: master
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis
+        role: master
+        tier: backend
+    spec:
+      containers:
+      - name: master
+        image: redis
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 6379
