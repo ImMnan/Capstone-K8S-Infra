@@ -1,0 +1,13 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-frontend
+  namespace: appk8s
+spec: 
+  targetCPUUtilizationPercentage: 50
+  minReplicas: 2
+  maxReplicas: 10
+  scaleTargetRef:
+    name: frontend
+    kind: Deployment
+    apiVersion: apps/v1
