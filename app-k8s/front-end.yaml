@@ -8,7 +8,7 @@ metadata:
     tier: frontend
 spec:
   type: NodePort 
-  # type: LoadBalancer
+  # type: LoadBalancer if the plan is to expose the sevice
   ports:
   - port: 80
   selector:
