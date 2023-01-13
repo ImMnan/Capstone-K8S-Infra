@@ -7,11 +7,11 @@
   tasks: 
 
   - name: "Initiating Docker installation first as per the OS..." 
-    import_tasks: plays/docker-ubuntu.yml
-    when: ansible_os_family == "Debian"
+    import_tasks: Ansible/docker-install.yml 
 
-  - name: "Initiating Docker installation for Rhel based system..."
-    import_tasks: plays/docker-rhel.yml
-    when: ansible_os_family == "RedHat"
+  - name: "Installing Kubernetes into the instances"
+    import_tasks: Ansible/k8s-install.yaml
+
+
 
  
