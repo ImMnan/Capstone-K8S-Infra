@@ -2,10 +2,11 @@
 
 locals {
   ami_id = "ami-09e67e426f25ce0d7"
-  vpc_id = "[vpc id]"
+  vpc_id = "vpc-"
   ssh_user = "ubuntu"
   key_name = "capkey"     # the name should match with the name on cloud
-  private_key_path = "/home/labsuser/capkey.pem" 
+  instance_count = 3
+  private_key_path = "/home/ubuntu/Capstone-K8S-Infra/capkey.pem" 
 }
 
 /* Declare the provider and other required information linked with it, access key, secret key and token as per AWS 
@@ -13,9 +14,9 @@ locals {
 
 provider "aws" {
   region     = "us-east-1"
-  access_key = "[AWS access key]"
-  secret_key = "[AWS secret key]"
-  token = "[AWS token]"
+  access_key = "key"
+  secret_key = "key"
+  token = "token"
 }
 
 /* [4.1] Creating a security group with the name of bmaccess and setting ingress egress security rules, it will automatically use the vac id from variables declared in local. */
@@ -54,7 +55,7 @@ resource "aws_security_group" "bmaccess" {
 # Resource creation using local variables - ami, security group and key. 
 
 resource "aws_instance" "web" {
-  count = 3
+  count = local.instance_count
   ami = local.ami_id
   instance_type = "t2.micro"
   associate_public_ip_address = "true"
@@ -89,9 +90,3 @@ resource "aws_instance" "web" {
     command = "echo ${self.public_ip} >> myhosts"
   }
 }
-
-# Saving the output.
-output "instance_ip" {
-  value = aws_instance.web.public_ip
-}
-
