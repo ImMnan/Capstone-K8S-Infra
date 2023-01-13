@@ -38,7 +38,3 @@
 - name: Install Docker Module for Python
   pip:
     name: docker
-
-# Initiating Blazemter-crane setup
-- name: "Creating agent and deploying Blazemeter-crane Docker containers into the machine..."
-  import_tasks: bm-agent.yml
