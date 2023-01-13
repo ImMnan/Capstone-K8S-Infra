@@ -54,6 +54,7 @@ resource "aws_security_group" "bmaccess" {
 # Resource creation using local variables - ami, security group and key. 
 
 resource "aws_instance" "web" {
+  count = 3
   ami = local.ami_id
   instance_type = "t2.micro"
   associate_public_ip_address = "true"
@@ -87,13 +88,6 @@ resource "aws_instance" "web" {
   provisioner "local-exec" {
     command = "echo ${self.public_ip} >> myhosts"
   }
-
-/* Running Ansible-playbook command through our local machine, using the myhosts as inventory file, ubuntu as user and wbkey.pem as private key. All satisfied using local variables */
-
-  provisioner "local-exec" {
-    command = "ansible-playbook -i myhosts --user ${local.ssh_user} --private-key ${local.private_key_path} bm-engine.yml"
-  }
-
 }
 
 # Saving the output.
