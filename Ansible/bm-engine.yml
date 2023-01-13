@@ -2,16 +2,18 @@
 
 - hosts: all
   become: true
-  vars_files: default/vars.yml
-  
-  tasks: 
+#  vars_files: default/vars.yml
 
-  - name: "Initiating Docker installation first as per the OS..." 
-    import_tasks: Ansible/docker-install.yml 
+  tasks:
+
+  - name: "Initiating Docker installation first as per the OS..."
+    import_tasks: docker-install.yml
 
   - name: "Installing Kubernetes into the instances"
-    import_tasks: Ansible/k8s-install.yaml
+    import_tasks: k8s-install.yaml
 
-
-
- 
+- hosts: master
+  become: true
+  tasks:
+  - name: "Installing Kubctl on master node"
+    import_tasks: k8s-master.yml
