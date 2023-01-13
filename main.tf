@@ -57,7 +57,7 @@ resource "aws_security_group" "bmaccess" {
 resource "aws_instance" "web" {
   count = local.instance_count
   ami = local.ami_id
-  instance_type = "t2.micro"
+  instance_type = "t2.medium"
   associate_public_ip_address = "true"
   vpc_security_group_ids =[aws_security_group.bmaccess.id]
   key_name = local.key_name
