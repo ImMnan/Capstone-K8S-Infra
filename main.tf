@@ -23,9 +23,16 @@ provider "aws" {
 
 resource "aws_security_group" "k8saccess" {
   name   = "cap_access"
-  vpc_id = local.vpc_id 
+  vpc_id = local.vpc_id
+    
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-  igress {
+  ingress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
