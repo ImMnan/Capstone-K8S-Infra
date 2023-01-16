@@ -38,6 +38,6 @@
      }
 - name: restarting the docker
   ansible.builtin.shell: |
+    systemctl enable docker
     systemctl daemon-reload
     systemctl restart docker
-    systemctl restart kubelet

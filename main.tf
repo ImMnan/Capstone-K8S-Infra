@@ -19,9 +19,9 @@ provider "aws" {
   token = "token"
 }
 
-/* [4.1] Creating a security group with the name of bmaccess and setting ingress egress security rules, it will automatically use the vac id from variables declared in local. */
+/* [4.1] Creating a security group with the name of k8saccess and setting ingress egress security rules, it will automatically use the vac id from variables declared in local. */
 
-resource "aws_security_group" "bmaccess" {
+resource "aws_security_group" "k8saccess" {
   name   = "cap_access"
   vpc_id = local.vpc_id
     
@@ -31,17 +31,11 @@ resource "aws_security_group" "bmaccess" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
+  igress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -59,7 +53,7 @@ resource "aws_instance" "web" {
   ami = local.ami_id
   instance_type = "t2.medium"
   associate_public_ip_address = "true"
-  vpc_security_group_ids =[aws_security_group.bmaccess.id]
+  vpc_security_group_ids =[aws_security_group.k8saccess.id]
   key_name = local.key_name
 
   tags = {
